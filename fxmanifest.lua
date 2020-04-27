@@ -4,7 +4,7 @@ game 'gta5'
 
 description 'Effect on crash'
 
-version '1.0.0'
+version '1.0.5'
 
 client_scripts {
   'config.lua',
