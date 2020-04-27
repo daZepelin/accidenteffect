@@ -34,3 +34,4 @@ Config.BlackoutSpeedRequiredLevel5 = 130
 
 -- Enable the disabling of controls if the player is blacked out
 Config.DisableControlsOnBlackout = true
+Config.TimeLeftToEnableControls = 10
