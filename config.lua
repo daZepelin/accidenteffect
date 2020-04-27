@@ -35,4 +35,6 @@ Config.BlackoutSpeedRequiredLevel5 = 130
 -- Enable the disabling of controls if the player is blacked out
 Config.DisableControlsOnBlackout = true
 Config.TimeLeftToEnableControls = 10
+
+-- Multiplier of screen shaking strength
 Config.ScreenShakeMultiplier = 0.1
