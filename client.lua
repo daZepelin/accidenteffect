@@ -7,13 +7,14 @@ local oldSpeed = 0.0
 local currentDamage = 0.0
 local currentSpeed = 0.0
 local vehicle
+local disableControls = false
 
 IsCar = function(veh)
         local vc = GetVehicleClass(veh)
         return (vc >= 0 and vc <= 7) or (vc >= 9 and vc <= 12) or (vc >= 17 and vc <= 20)
 end 
 
-function InfoRanny(text)
+function note(text)
     SetNotificationTextEntry("STRING")
     AddTextComponentString(text)
     DrawNotification(false, false)
@@ -24,6 +25,7 @@ AddEventHandler("crashEffect", function(countDown, accidentLevel)
 
     if not effectActive or (accidentLevel > currAccidentLevel) then
         currAccidentLevel = accidentLevel
+        disableControls = true
         effectActive = true
         blackOutActive = true
 		DoScreenFadeOut(100)
@@ -45,9 +47,12 @@ AddEventHandler("crashEffect", function(countDown, accidentLevel)
             end 
             Wait(750)
 --[[             TriggerEvent('chatMessage', "countdown: " .. countDown) -- Debug printout ]]
-
+            
             countDown = countDown - 1
 
+            if countDown < Config.TimeLeftToEnableControls and disableControls then
+                disableControls = false
+            end
             -- Stops screen effect before countdown finishes
             if countDown <= 1 then
                 StopScreenEffect('PeyoteEndOut')
@@ -84,11 +89,11 @@ Citizen.CreateThread(function()
                         if (oldBodyDamage - currentDamage) >= Config.BlackoutDamageRequiredLevel5 or
                         (oldSpeed - currentSpeed)  >= Config.BlackoutSpeedRequiredLevel5
                         then
-                            --[[ InfoRanny("lv5") ]]
+                            --[[ note("lv5") ]]
                             oldBodyDamage = currentDamage
                             TriggerEvent("crashEffect", Config.EffectTimeLevel5, 5)
-                            --[[ InfoRanny(oldSpeed - currentSpeed)
-                            InfoRanny(oldBodyDamage - currentDamage) ]]
+                            --[[ note(oldSpeed - currentSpeed)
+                            note(oldBodyDamage - currentDamage) ]]
                             
                             
                             
@@ -96,20 +101,20 @@ Citizen.CreateThread(function()
                         elseif (oldBodyDamage - currentDamage) >= Config.BlackoutDamageRequiredLevel4 or
                         (oldSpeed - currentSpeed)  >= Config.BlackoutSpeedRequiredLevel4
                         then
-                            --[[ InfoRanny("lv4") ]]
+                            --[[ note("lv4") ]]
                             TriggerEvent("crashEffect", Config.EffectTimeLevel4, 4)
                             oldBodyDamage = currentDamage
-                           --[[  InfoRanny(oldSpeed - currentSpeed)
-                            InfoRanny(oldBodyDamage - currentDamage) ]]
+                           --[[  note(oldSpeed - currentSpeed)
+                            note(oldBodyDamage - currentDamage) ]]
                             
                         
 
                         elseif (oldBodyDamage - currentDamage) >= Config.BlackoutDamageRequiredLevel3 or
                         (oldSpeed - currentSpeed)  >= Config.BlackoutSpeedRequiredLevel3
                         then   
-                            --[[ InfoRanny(oldSpeed - currentSpeed)
-                            InfoRanny(oldBodyDamage - currentDamage)
-                            InfoRanny("lv3") ]]
+                            --[[ note(oldSpeed - currentSpeed)
+                            note(oldBodyDamage - currentDamage)
+                            note("lv3") ]]
                             oldBodyDamage = currentDamage
                             TriggerEvent("crashEffect", Config.EffectTimeLevel3, 3)
                             
@@ -118,9 +123,9 @@ Citizen.CreateThread(function()
                         elseif (oldBodyDamage - currentDamage) >= Config.BlackoutDamageRequiredLevel2 or
                         (oldSpeed - currentSpeed)  >= Config.BlackoutSpeedRequiredLevel2
                         then
-                            --[[ InfoRanny(-(oldSpeed - currentSpeed))
-                            InfoRanny(oldBodyDamage - currentDamage)
-                            InfoRanny("lv2") ]]
+                            --[[ note(-(oldSpeed - currentSpeed))
+                            note(oldBodyDamage - currentDamage)
+                            note("lv2") ]]
                             oldBodyDamage = currentDamage
                             TriggerEvent("crashEffect", Config.EffectTimeLevel2, 2)
 
@@ -128,9 +133,9 @@ Citizen.CreateThread(function()
                         elseif (oldBodyDamage - currentDamage) >= Config.BlackoutDamageRequiredLevel1 or
                         (oldSpeed - currentSpeed)  >= Config.BlackoutSpeedRequiredLevel1
                         then
-                            --[[ InfoRanny(-(oldSpeed - currentSpeed))
-                            InfoRanny(oldBodyDamage - currentDamage)
-                            InfoRanny("lv1") ]]
+                            --[[ note(-(oldSpeed - currentSpeed))
+                            note(oldBodyDamage - currentDamage)
+                            note("lv1") ]]
                             oldBodyDamage = currentDamage
                             TriggerEvent("crashEffect", Config.EffectTimeLevel1, 1)
                         end
@@ -141,7 +146,7 @@ Citizen.CreateThread(function()
                 oldSpeed = 0
             end
             
-        if blackOutActive and Config.DisableControlsOnBlackout then
+        if disableControls and Config.DisableControlsOnBlackout then
             -- Controls to disable while player is on blackout
 			DisableControlAction(0,71,true) -- veh forward
 			DisableControlAction(0,72,true) -- veh backwards
