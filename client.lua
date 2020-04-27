@@ -43,7 +43,7 @@ AddEventHandler("crashEffect", function(countDown, accidentLevel)
             -- Adds screen moving effect while remaining countdown is 3 times the accident level,
             -- In order to stop screen shaking BEFORE the 'blur' effect finishes
             if countDown > (3.5*accidentLevel)   then 
-                ShakeGameplayCam("MEDIUM_EXPLOSION_SHAKE", (accidentLevel * 0.3))
+                ShakeGameplayCam("MEDIUM_EXPLOSION_SHAKE", (accidentLevel * Config.ScreenShakeMultiplier))
             end 
             Wait(750)
 --[[             TriggerEvent('chatMessage', "countdown: " .. countDown) -- Debug printout ]]
