@@ -141,8 +141,12 @@ Citizen.CreateThread(function()
                         end
                     end
                 end
-            else
+            elseif wasInCar then
+                wasInCar = false
+                beltOn = false
+                currentDamage = 0
                 oldBodyDamage = 0
+                currentSpeed = 0
                 oldSpeed = 0
             end
             
